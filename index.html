@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FDCA Plant PFD</title>
+  <meta name="description" content="Interactive process flow diagram and operator simulator of a dissolving pulp to FDCA plant with solvent recovery.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Cellulose → FDCA</h1>
+      <p>Process flow diagram and plant simulator</p>
+    </div>
+    <dl class="kpis" id="kpis"></dl>
+  </header>
+
+  <main class="layout">
+    <section class="stage" aria-label="Process flow diagram">
+      <div class="toolbar" role="toolbar" aria-label="Diagram and plant controls">
+        <div class="btn-group sim-group">
+          <span class="status-chip" id="sim-status" role="status" aria-live="polite"></span>
+          <button class="toggle action" id="sim-run">Stop plant</button>
+          <button class="icon-btn" id="sim-pause" title="Pause simulation" aria-label="Pause simulation" aria-pressed="false">
+            <svg viewBox="0 0 20 20" aria-hidden="true" class="i-pause"><path d="M7 4v12M13 4v12"/></svg>
+            <svg viewBox="0 0 20 20" aria-hidden="true" class="i-play"><path d="M6 4l10 6-10 6z"/></svg>
+          </button>
+          <label class="speed">
+            <span class="sr-only">Simulation speed</span>
+            <select id="sim-speed">
+              <option value="1">1× real time</option>
+              <option value="10">10×</option>
+              <option value="60" selected>60× (1 s = 1 min)</option>
+              <option value="300">300×</option>
+            </select>
+          </label>
+          <span class="clock" id="sim-clock" aria-label="Plant time"></span>
+          <button class="alarm-btn" id="alarm-btn" title="Show alarms">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3a4.5 4.5 0 0 0-4.5 4.5V11L4 13.5h12L14.5 11V7.5A4.5 4.5 0 0 0 10 3zM8.5 16a1.5 1.5 0 0 0 3 0"/></svg>
+            <span id="alarm-count">0</span><span class="sr-only"> active alarms</span>
+          </button>
+        </div>
+        <div class="btn-group">
+          <button class="icon-btn" id="zoom-in" title="Zoom in (+)" aria-label="Zoom in">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"/></svg>
+          </button>
+          <button class="icon-btn" id="zoom-out" title="Zoom out (−)" aria-label="Zoom out">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12"/></svg>
+          </button>
+          <button class="icon-btn" id="zoom-fit" title="Fit sheet (0)" aria-label="Fit sheet">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg>
+          </button>
+        </div>
+        <div class="btn-group">
+          <button class="toggle" id="toggle-instr" aria-pressed="true">Instruments</button>
+          <button class="toggle" id="toggle-flow" aria-pressed="true">Animation</button>
+          <button class="toggle" id="toggle-tags" aria-pressed="false">Flow rates</button>
+        </div>
+        <label class="jump">
+          <span class="sr-only">Find a unit</span>
+          <select id="jump"></select>
+        </label>
+      </div>
+
+      <div class="canvas" id="canvas">
+        <svg id="pfd" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="group"
+             aria-label="Process flow diagram: hydrolysis, isomerization and SMB separation, HMF synthesis, FDCA synthesis and solvent recovery"></svg>
+        <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+      </div>
+
+      <div class="legend" id="legend" aria-label="Legend"></div>
+    </section>
+
+    <aside class="panel" id="panel-wrap" aria-label="Control room and details">
+      <div class="panel-tabs" role="tablist">
+        <button role="tab" id="tab-control" aria-selected="true" aria-controls="control-view">Control room</button>
+        <button role="tab" id="tab-details" aria-selected="false" aria-controls="panel">Details</button>
+      </div>
+      <div id="control-view" role="tabpanel" aria-labelledby="tab-control"></div>
+      <div id="panel" role="tabpanel" aria-labelledby="tab-details" aria-live="polite" hidden></div>
+    </aside>
+  </main>
+
+  <script src="js/flowsheet-data.js"></script>
+  <script src="js/symbols.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/pfd.js"></script>
+  <script src="js/control-room.js"></script>
+</body>
+</html>
